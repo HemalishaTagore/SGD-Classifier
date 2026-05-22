@@ -15,8 +15,8 @@ To write a program to predict the type of species of the Iris flower using the S
 
 ## Program:
 
-## Developed by: 
-## RegisterNumber:  
+## Developed by: HEMALISHA T
+## RegisterNumber: 212225040123
 
 ```
 import pandas as pd
