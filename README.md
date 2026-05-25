@@ -22,38 +22,44 @@ To write a program to predict the type of species of the Iris flower using the S
 ```
 import pandas as pd
 from sklearn.datasets import load_iris
-from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 iris = load_iris()
-df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
-df['target'] = iris.target
-print(df.head())
 
-X = df.drop('target', axis=1)
-y = df['target']
+X = iris.data
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+y = iris.target
 
-sgd_clf = SGDClassifier(max_iter=1000, tol=1e-3)
-sgd_clf.fit(X_train, y_train)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
-y_pred = sgd_clf.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Accuracy: {accuracy:.3f}")
+model = SGDClassifier()
 
-cm = confusion_matrix(y_test, y_pred)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
 print("Confusion Matrix:")
-print(cm)
+print(confusion_matrix(y_test, y_pred))
 
-plt.figure(figsize=(6, 4))
-sns.heatmap(cm, annot=True, cmap="Blues", fmt='d', xticklabels=iris.target_names, yticklabels=iris.target_names)
-plt.xlabel("Predicted Label")
-plt.ylabel("True Label")
-plt.title("Confusion Matrix")
+new_flower = [[5.1, 3.5, 1.4, 0.2]]
+
+prediction = model.predict(new_flower)
+
+print("Predicted Species:", iris.target_names[prediction][0])
+
+plt.scatter(X[:,0], X[:,1], c=y)
+
+plt.xlabel("Sepal Length")
+plt.ylabel("Sepal Width")
+plt.title("Iris Flower Classification")
+
 plt.show()
 ```
 
